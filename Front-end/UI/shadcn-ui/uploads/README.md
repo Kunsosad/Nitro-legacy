@@ -1,0 +1,1 @@
+﻿Place the Nitro Legacy sprite sheet (e.g. image.png) in this folder.

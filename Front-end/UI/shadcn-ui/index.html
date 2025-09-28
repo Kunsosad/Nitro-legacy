@@ -1,0 +1,764 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png" />
+  <title>Nitro Legacy | Web3 Pixel Adventure</title>
+  <meta
+    name="description"
+    content="Discover Nitro Legacy, a Web3 pixel GameFi world with four classes, blockchain rewards, Nitro-powered skills, and a rich inventory of pixel weapons."
+  />
+  <meta name="author" content="MGX" />
+  <meta property="og:title" content="Nitro Legacy - Web3 Pixel Adventure" />
+  <meta property="og:description" content="Choose your class, conquer four maps, and charge your Nitro gauge to unleash class ultimates in this GameFi concept UI." />
+  <meta property="og:type" content="website" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    :root {
+      color-scheme: dark;
+      --bg-space: radial-gradient(circle at 20% 20%, #2f205d 0%, #1a1038 22%, #05020d 70%);
+      --panel: rgba(10, 8, 35, 0.78);
+      --panel-strong: rgba(12, 13, 40, 0.92);
+      --neon: #fb9e3c;
+      --accent: #6fdcff;
+      --accent-strong: #56b2ff;
+      --pixel-border: 6px;
+      --radius: 22px;
+      --text: #fef7ff;
+      --muted: #c9c1ff;
+      --grid-line: rgba(255, 255, 255, 0.06);
+      --rarity-common: #9aa5b1;
+      --rarity-rare: #4ac5ff;
+      --rarity-epic: #bb6bff;
+      --rarity-legendary: #ffb347;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: 'Press Start 2P', monospace;
+      color: var(--text);
+      background: var(--bg-space);
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 0);
+      background-size: 60px 60px;
+      opacity: 0.25;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    body::after {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+      background-size: 90px 90px;
+      opacity: 0.35;
+      animation: drift 40s linear infinite;
+    }
+
+    @keyframes drift {
+      from {
+        transform: translate3d(0, 0, 0);
+      }
+      to {
+        transform: translate3d(-60px, -40px, 0);
+      }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px min(6vw, 80px);
+      background: rgba(5, 4, 18, 0.85);
+      border-bottom: 4px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: clamp(0.9rem, 1.6vw, 1.2rem);
+      letter-spacing: 3px;
+      color: var(--neon);
+      text-shadow: 2px 2px 0 #3f1f58;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    nav {
+      display: flex;
+      gap: clamp(16px, 2vw, 32px);
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      font-size: clamp(0.55rem, 0.8vw, 0.7rem);
+      color: var(--muted);
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    main {
+      padding-bottom: 120px;
+    }
+
+    section {
+      position: relative;
+      padding: clamp(72px, 12vh, 140px) min(6vw, 80px);
+      display: grid;
+      gap: clamp(28px, 5vh, 48px);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    p,
+    span,
+    li {
+      line-height: 1.6;
+      font-size: clamp(0.6rem, 0.85vw, 0.85rem);
+    }
+
+    .hero {
+      min-height: 90vh;
+      align-content: center;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: clamp(32px, 5vw, 64px);
+    }
+
+    .hero-copy {
+      display: grid;
+      gap: clamp(24px, 4vh, 36px);
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      color: var(--neon);
+    }
+
+    .hero-copy h1 span {
+      color: var(--accent);
+    }
+
+    .hero-copy p {
+      color: var(--muted);
+      max-width: 540px;
+    }
+
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .btn {
+      border: none;
+      padding: 14px 22px;
+      font-family: inherit;
+      font-size: clamp(0.6rem, 0.85vw, 0.8rem);
+      border-radius: 14px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ffb347 0%, #ff7f70 50%, #ffb347 100%);
+      color: #1b0635;
+    }
+
+    .btn-outline {
+      background: rgba(10, 6, 40, 0.7);
+      color: var(--accent);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    .hero-showcase {
+      position: relative;
+      min-height: 360px;
+      border-radius: var(--radius);
+      border: var(--pixel-border) solid rgba(255, 255, 255, 0.12);
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.12), rgba(17, 13, 48, 0.95));
+      padding: clamp(24px, 4vw, 40px);
+      display: grid;
+      gap: 24px;
+      overflow: hidden;
+    }
+
+    .hero-showcase::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 60% 20%, rgba(138, 87, 255, 0.35), transparent 55%),
+        radial-gradient(circle at 20% 85%, rgba(255, 180, 180, 0.35), transparent 52%);
+      pointer-events: none;
+    }
+
+    .pixel-preview {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 18px;
+      background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0 8px, transparent 8px 16px),
+        linear-gradient(160deg, rgba(70, 210, 255, 0.45), rgba(16, 0, 72, 0.9));
+      border: 4px solid rgba(255, 255, 255, 0.18);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      image-rendering: pixelated;
+    }
+
+    .pixel-hero {
+      width: clamp(180px, 40%, 240px);
+      filter: drop-shadow(0 14px 0 rgba(14, 8, 44, 0.6));
+    }
+
+    .class-selector {
+      display: grid;
+      gap: 20px;
+    }
+
+    .selector-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .class-card {
+      position: relative;
+      padding: 22px;
+      border-radius: 18px;
+      background: rgba(9, 5, 30, 0.78);
+      border: 4px solid rgba(255, 255, 255, 0.08);
+      min-height: 220px;
+      display: grid;
+      gap: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      overflow: hidden;
+    }
+
+    .class-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .class-card.active {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+    }
+
+    .class-card.active::after {
+      opacity: 1;
+    }
+
+    .class-card h3 {
+      font-size: clamp(0.95rem, 1.3vw, 1.3rem);
+      color: var(--accent);
+    }
+
+    .class-card p {
+      color: var(--muted);
+      font-size: clamp(0.55rem, 0.8vw, 0.75rem);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: clamp(0.45rem, 0.7vw, 0.65rem);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .class-details {
+      display: grid;
+      gap: 24px;
+      background: var(--panel);
+      padding: clamp(24px, 3vw, 36px);
+      border-radius: var(--radius);
+      border: 4px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+    }
+
+    .stat-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .stat-card {
+      background: rgba(8, 6, 28, 0.85);
+      border-radius: 16px;
+      padding: 14px 18px;
+      border: 3px solid rgba(255, 255, 255, 0.06);
+      display: grid;
+      gap: 8px;
+    }
+
+    .stat-card span {
+      font-size: 0.55rem;
+      letter-spacing: 1px;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-size: clamp(0.85rem, 1.1vw, 1rem);
+      color: var(--accent);
+    }
+
+    .bar {
+      position: relative;
+      width: 100%;
+      height: 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--accent), var(--neon));
+      transform-origin: left;
+      transform: scaleX(0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .nitro-gauge {
+      display: grid;
+      gap: 10px;
+    }
+
+    .nitro-gauge .bar {
+      height: 12px;
+      border-radius: 12px;
+    }
+
+    .nitro-description {
+      color: var(--muted);
+      font-size: clamp(0.52rem, 0.8vw, 0.75rem);
+      line-height: 1.5;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
+      color: var(--neon);
+    }
+
+    .subtitle {
+      color: var(--accent);
+      font-size: clamp(0.7rem, 1vw, 0.9rem);
+    }
+
+    .map-gallery {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .map-card {
+      position: relative;
+      min-height: 280px;
+      border-radius: 20px;
+      border: 4px solid rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+      display: grid;
+      align-content: space-between;
+      padding: 22px;
+      background: #0c0e24;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+      transition: transform 0.2s ease;
+    }
+
+    .map-card:hover {
+      transform: translateY(-6px) scale(1.01);
+    }
+
+    .map-card .map-overlay {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      filter: saturate(1.2) contrast(1.1);
+      opacity: 0.85;
+      mix-blend-mode: lighten;
+    }
+
+    .map-info {
+      position: relative;
+      display: grid;
+      gap: 10px;
+      background: rgba(4, 6, 24, 0.86);
+      padding: 16px;
+      border-radius: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .map-info h3 {
+      font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+      color: var(--accent);
+    }
+
+    .enemy-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .enemy-tags span {
+      padding: 4px 10px;
+      border-radius: 10px;
+      font-size: 0.45rem;
+      background: rgba(255, 255, 255, 0.1);
+      letter-spacing: 1px;
+    }
+
+    .inventory-section {
+      background: radial-gradient(circle at top, rgba(36, 25, 78, 0.8), rgba(7, 4, 18, 0.94));
+      border: 4px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      padding: clamp(28px, 4vw, 48px);
+      display: grid;
+      gap: 28px;
+    }
+
+    .inventory-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .inventory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      gap: 14px;
+    }
+
+    .inventory-slot {
+      position: relative;
+      height: 88px;
+      border-radius: 16px;
+      background: rgba(12, 10, 32, 0.85);
+      border: 3px solid rgba(255, 255, 255, 0.08);
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 0.55rem;
+      padding: 8px;
+      text-align: center;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .inventory-slot.item-common {
+      border-color: var(--rarity-common);
+    }
+
+    .inventory-slot.item-rare {
+      border-color: var(--rarity-rare);
+    }
+
+    .inventory-slot.item-epic {
+      border-color: var(--rarity-epic);
+    }
+
+    .inventory-slot.item-legendary {
+      border-color: var(--rarity-legendary);
+    }
+
+    .inventory-slot.active {
+      transform: translateY(-4px);
+    }
+
+    .slot-icon {
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .weapons-board {
+      display: grid;
+      gap: 24px;
+    }
+
+    .weapon-columns {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .weapon-card {
+      background: var(--panel-strong);
+      border-radius: 18px;
+      border: 4px solid rgba(255, 255, 255, 0.08);
+      padding: 20px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .weapon-card h3 {
+      color: var(--accent);
+      font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    }
+
+    .weapon-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .weapon-list li {
+      list-style: none;
+      padding: 10px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 2px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .weapon-list strong {
+      display: block;
+      font-size: 0.65rem;
+      color: var(--neon);
+    }
+
+    .weapon-list span {
+      font-size: 0.5rem;
+      color: var(--muted);
+    }
+
+    .wallet-panel {
+      display: grid;
+      gap: 16px;
+      background: rgba(12, 10, 40, 0.9);
+      border-radius: 18px;
+      border: 4px solid rgba(255, 255, 255, 0.08);
+      padding: 24px;
+    }
+
+    .wallet-panel ul {
+      margin: 0;
+      padding-left: 20px;
+      display: grid;
+      gap: 12px;
+    }
+
+    footer {
+      padding: 40px clamp(24px, 6vw, 80px) 60px;
+      color: var(--muted);
+      text-align: center;
+      font-size: clamp(0.5rem, 0.75vw, 0.7rem);
+      border-top: 4px solid rgba(255, 255, 255, 0.06);
+      background: rgba(5, 4, 18, 0.85);
+    }
+
+    @media (max-width: 760px) {
+      nav {
+        justify-content: center;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .class-card {
+        min-height: 180px;
+      }
+
+      .map-card {
+        min-height: 240px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="logo">Nitro <span>Legacy</span></div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#classes">Classes</a>
+      <a href="#maps">Maps</a>
+      <a href="#inventory">Inventory</a>
+      <a href="#weapons">Weapons</a>
+      <a href="#wallet">Wallet</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-copy">
+        <h1>Nitro Legacy <span>GameFi</span> Concept</h1>
+        <p>
+          Choose your destiny in a Web3 pixel RPG designed for blockchain explorers. Nitro Legacy lets you sync a crypto
+          wallet, farm monsters across four handcrafted maps, and channel a Nitro gauge to unleash signature class skills.
+        </p>
+        <div class="cta-group">
+          <button class="btn btn-primary">Connect Wallet</button>
+          <button class="btn btn-outline">Explore Whitepaper</button>
+        </div>
+        <div class="badge">Powered by Pixel MGX · GameFi Ready</div>
+      </div>
+      <div class="hero-showcase">
+        <div class="pixel-preview">
+          <img src="https://public-frontend-cos.metadl.com/mgx/img/nitro-legacy/hero-swordfighter.png" alt="Swordfighter pixel art" class="pixel-hero" />
+        </div>
+        <div class="class-selector">
+          <span class="subtitle">Pick Your Starting Class</span>
+          <div class="selector-grid" id="class-selector">
+            <article class="class-card active" data-class="swordfighter">
+              <h3>Swordfighter</h3>
+              <p>Balanced melee duelist wielding an enchanted Iron Sword with dependable Nitro combos.</p>
+              <div class="badge">Starter Weapon · Iron Sword</div>
+            </article>
+            <article class="class-card" data-class="archer">
+              <h3>Archer</h3>
+              <p>Precision ranged striker raining elemental arrows while weaving Nitro ricochet shots.</p>
+              <div class="badge">Starter Weapon · Ashwood Bow</div>
+            </article>
+            <article class="class-card" data-class="magician">
+              <h3>Magician</h3>
+              <p>Arcane prodigy harnessing crystals and mana orbs to reshape the battlefield.</p>
+              <div class="badge">Starter Weapon · Astral Staff</div>
+            </article>
+            <article class="class-card" data-class="support">
+              <h3>Support</h3>
+              <p>Battlefield tactician who shields allies, restores vitality, and manipulates Nitro sharing.</p>
+              <div class="badge">Starter Weapon · Ember Tome</div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="class-details" id="classes">
+      <header>
+        <h2 class="section-title">Class Overview</h2>
+        <p class="subtitle">Six core stats · Nitro gauge · Starter loadouts tied to blockchain rewards</p>
+      </header>
+      <div class="stat-grid" id="stat-grid"></div>
+      <div class="nitro-gauge">
+        <span class="subtitle">Nitro Gauge</span>
+        <div class="bar"><div class="bar-fill" id="nitro-bar"></div></div>
+        <p class="nitro-description" id="nitro-description"></p>
+      </div>
+      <div class="nitro-description" id="class-flavour"></div>
+      <div class="wallet-panel">
+        <span class="subtitle">Nitro Reward Flow</span>
+        <ul>
+          <li>Complete quests or farm monsters to earn <strong>Nara</strong> points and NFT drops.</li>
+          <li>Allocate Nara into any base stat to tailor your build instantly.</li>
+          <li>Charge the Nitro gauge by chaining skills; spend the full bar to unleash the class ultimate.</li>
+          <li>Connect a blockchain wallet to sync rewards and marketplace transactions.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="maps">
+      <h2 class="section-title">World Maps</h2>
+      <p class="subtitle">
+        Four panoramic scenes crafted for Nitro Legacy. Each zone features bespoke monsters and procedural events.
+      </p>
+      <div class="map-gallery" id="map-gallery"></div>
+    </section>
+
+    <section class="inventory-section" id="inventory">
+      <div class="inventory-header">
+        <div>
+          <h2 class="section-title">Inventory</h2>
+          <p class="subtitle">20-slot armory synced with blockchain ownership</p>
+        </div>
+        <div class="badge" id="nara-points">Nara · 120 pts</div>
+      </div>
+      <div class="inventory-grid" id="inventory-grid"></div>
+      <div class="nitro-description">
+        Highlighted item indicates the equipped starter weapon for your chosen class. Empty slots become loot-ready once
+        chain-verified drops arrive.
+      </div>
+    </section>
+
+    <section class="weapons-board" id="weapons">
+      <header>
+        <h2 class="section-title">Weapon Catalog</h2>
+        <p class="subtitle">
+          Pulls directly from the pixel sheet. Scroll each column to review the progression path per class.
+        </p>
+      </header>
+      <div class="weapon-columns" id="weapon-columns"></div>
+    </section>
+
+    <section id="wallet">
+      <h2 class="section-title">Wallet & GameFi Hooks</h2>
+      <p class="subtitle">
+        Nitro Legacy integrates wallet connect, NFT equipment, and reward payouts without compromising on pixel charm.
+      </p>
+      <div class="wallet-panel">
+        <span class="subtitle">Key Systems</span>
+        <ul>
+          <li>Token wallet connection using EVM-compatible providers.</li>
+          <li>Marketplace tab allows swapping NFT weapons and map keys.</li>
+          <li>Nitro spenders trigger on-chain events for rare drop rolls.</li>
+          <li>Support role can donate Nitro energy to allies in co-op raids.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Nitro Legacy UI concept · Pixel art placeholders sourced from MGX preview. Customize imagery inside the
+    <code>uploads/</code> directory to replace gradients with final sprites. © 2025
+  </footer>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

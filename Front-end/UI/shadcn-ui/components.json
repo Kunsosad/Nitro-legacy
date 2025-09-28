@@ -1,0 +1,5 @@
+﻿{
+  "style": "shadcn",
+  "platform": "vanilla",
+  "features": ["inventory", "sprite-sheet"]
+}
