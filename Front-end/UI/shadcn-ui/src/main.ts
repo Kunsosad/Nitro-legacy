@@ -1,4 +1,4 @@
-﻿interface ClassStats {
+interface ClassStats {
   atk: number;
   def: number;
   int: number;
@@ -69,7 +69,7 @@ const classData: Record<ClassId, ClassData> = {
     description:
       'Swordfighters open Nitro Legacy in the Forest of Whispers. They specialize in close-quarters pressure, chaining parries into Nitro-charged finishers. Nara points reinforce their already stable ATK and DEF.',
     nitroSkill:
-      'Blade Tempest — spend the full Nitro bar to unleash a spinning combo that strikes all nearby foes three times and grants a brief damage shield.',
+      'Blade Tempest - spend the full Nitro bar to unleash a spinning combo that strikes all nearby foes three times and grants a brief damage shield.',
     stats: {
       atk: 40,
       def: 20,
@@ -79,8 +79,8 @@ const classData: Record<ClassId, ClassData> = {
       nitro: 30
     },
     color: '#ff9b45',
-    heroArt: 'https://public-frontend-cos.metadl.com/mgx/img/nitro-legacy/hero-swordfighter.png',
-    heroAlt: 'Swordfighter pixel art hero',
+    heroArt: 'https://sdmntprwestus2.oaiusercontent.com/files/00000000-deac-61f8-a342-55a68cce7cb6/raw?se=2025-09-29T05%3A52%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=da8e8b37-bf16-52bd-b462-19a678f6e4cc&skoid=d5627e4c-566b-4761-a954-54993b0ed17b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-29T00%3A17%3A08Z&ske=2025-09-30T00%3A17%3A08Z&sks=b&skv=2024-08-04&sig=vFbgMvpGNInw2Wc/K2Xer8trx6OUuKIKP69l6a31vgA%3D',
+    heroAlt: 'Nitro Legacy pixel logo',
     nara: 120,
     affinityMaps: ['forest', 'citadel'],
     starterWeaponName: 'Iron Sword'
@@ -93,7 +93,7 @@ const classData: Record<ClassId, ClassData> = {
     description:
       'Archers dominate open spaces like the Molten Peaks with ricochet shots and Nitro-powered piercing volleys. Their high speed lets them kite rare mobs while investing Nara to push critical hit potential.',
     nitroSkill:
-      'Tempest Volley — consumes Nitro to fire a whirlwind of arrows that applies elemental marks, enabling bonus drops on marked foes.',
+      'Tempest Volley - consumes Nitro to fire a whirlwind of arrows that applies elemental marks, enabling bonus drops on marked foes.',
     stats: {
       atk: 30,
       def: 10,
@@ -103,8 +103,8 @@ const classData: Record<ClassId, ClassData> = {
       nitro: 30
     },
     color: '#ffa463',
-    heroArt: 'https://public-frontend-cos.metadl.com/mgx/img/nitro-legacy/hero-archer.png',
-    heroAlt: 'Archer pixel art hero',
+    heroArt: 'https://sdmntprwestus2.oaiusercontent.com/files/00000000-deac-61f8-a342-55a68cce7cb6/raw?se=2025-09-29T05%3A52%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=da8e8b37-bf16-52bd-b462-19a678f6e4cc&skoid=d5627e4c-566b-4761-a954-54993b0ed17b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-29T00%3A17%3A08Z&ske=2025-09-30T00%3A17%3A08Z&sks=b&skv=2024-08-04&sig=vFbgMvpGNInw2Wc/K2Xer8trx6OUuKIKP69l6a31vgA%3D',
+    heroAlt: 'Nitro Legacy pixel logo',
     nara: 110,
     affinityMaps: ['canyon', 'forest'],
     starterWeaponName: 'Ashwood Bow'
@@ -117,7 +117,7 @@ const classData: Record<ClassId, ClassData> = {
     description:
       'Magicians excel in the Glacial Bastion, drawing power from ancient runes. Their INT and mana scaling eruptions devastate clustered enemies. Allocate Nara into Nitro to extend ultimate duration.',
     nitroSkill:
-      'Astral Nova — convert the Nitro gauge into an orbiting crystal nova that freezes enemies and refunds mana on detonation.',
+      'Astral Nova - convert the Nitro gauge into an orbiting crystal nova that freezes enemies and refunds mana on detonation.',
     stats: {
       atk: 10,
       def: 10,
@@ -127,8 +127,8 @@ const classData: Record<ClassId, ClassData> = {
       nitro: 30
     },
     color: '#5fc1ff',
-    heroArt: 'https://public-frontend-cos.metadl.com/mgx/img/nitro-legacy/hero-magician.png',
-    heroAlt: 'Magician pixel art hero',
+    heroArt: 'https://sdmntprwestus2.oaiusercontent.com/files/00000000-deac-61f8-a342-55a68cce7cb6/raw?se=2025-09-29T05%3A52%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=da8e8b37-bf16-52bd-b462-19a678f6e4cc&skoid=d5627e4c-566b-4761-a954-54993b0ed17b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-29T00%3A17%3A08Z&ske=2025-09-30T00%3A17%3A08Z&sks=b&skv=2024-08-04&sig=vFbgMvpGNInw2Wc/K2Xer8trx6OUuKIKP69l6a31vgA%3D',
+    heroAlt: 'Nitro Legacy pixel logo',
     nara: 115,
     affinityMaps: ['citadel', 'abyss'],
     starterWeaponName: 'Astral Staff'
@@ -141,7 +141,7 @@ const classData: Record<ClassId, ClassData> = {
     description:
       'Support channelers guard the Clockwork Haven settlement. They manipulate Nitro to shield allies, heal, and trigger aura buffs. Investing Nara into DEF or mana transforms them into raid anchors.',
     nitroSkill:
-      'Harmony Pulse — consume Nitro to deploy a field that heals allies, cleanses debuffs, and refunds a portion of Nitro to the party.',
+      'Harmony Pulse - consume Nitro to deploy a field that heals allies, cleanses debuffs, and refunds a portion of Nitro to the party.',
     stats: {
       atk: 10,
       def: 40,
@@ -151,8 +151,8 @@ const classData: Record<ClassId, ClassData> = {
       nitro: 30
     },
     color: '#6bd3ff',
-    heroArt: 'https://public-frontend-cos.metadl.com/mgx/img/nitro-legacy/hero-support.png',
-    heroAlt: 'Support pixel art hero',
+    heroArt: 'https://sdmntprwestus2.oaiusercontent.com/files/00000000-deac-61f8-a342-55a68cce7cb6/raw?se=2025-09-29T05%3A52%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=da8e8b37-bf16-52bd-b462-19a678f6e4cc&skoid=d5627e4c-566b-4761-a954-54993b0ed17b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-29T00%3A17%3A08Z&ske=2025-09-30T00%3A17%3A08Z&sks=b&skv=2024-08-04&sig=vFbgMvpGNInw2Wc/K2Xer8trx6OUuKIKP69l6a31vgA%3D',
+    heroAlt: 'Nitro Legacy pixel logo',
     nara: 130,
     affinityMaps: ['forest', 'haven'],
     starterWeaponName: 'Ember Tome'
@@ -170,7 +170,7 @@ const assignItem = (slot: number, item: InventoryItem) => {
 assignItem(0, {
   id: 'swordfighter-iron-sword',
   name: 'Iron Sword',
-  icon: '⚔️',
+  icon: '??',
   rarity: 'rare',
   owner: 'swordfighter',
   description: 'Reliable blade infused with Nitro conduits. Grants +5 ATK on combo finishers.'
@@ -179,7 +179,7 @@ assignItem(0, {
 assignItem(1, {
   id: 'swordfighter-chainmail',
   name: 'Chainmail Vest',
-  icon: '🛡️',
+  icon: '???',
   rarity: 'common',
   owner: 'swordfighter',
   description: 'Light armor crafted in Forest of Whispers. +8 DEF when Nitro above 15.'
@@ -188,7 +188,7 @@ assignItem(1, {
 assignItem(2, {
   id: 'archer-ashwood-bow',
   name: 'Ashwood Bow',
-  icon: '🏹',
+  icon: '??',
   rarity: 'rare',
   owner: 'archer',
   description: 'Starter bow strung with spectral fibers. Unlocks ricochet at Nitro threshold 20.'
@@ -197,7 +197,7 @@ assignItem(2, {
 assignItem(3, {
   id: 'archer-frost-arrows',
   name: 'Frostbite Quiver',
-  icon: '❄️',
+  icon: '??',
   rarity: 'epic',
   owner: 'archer',
   description: 'Elemental quiver that slows enemies and extends Nitro combos for Archers.'
@@ -206,7 +206,7 @@ assignItem(3, {
 assignItem(4, {
   id: 'magician-astral-staff',
   name: 'Astral Staff',
-  icon: '✨',
+  icon: '?',
   rarity: 'rare',
   owner: 'magician',
   description: 'Focus stave forged in the Glacial Bastion. Boosts INT scaling for Astral Nova.'
@@ -215,7 +215,7 @@ assignItem(4, {
 assignItem(5, {
   id: 'magician-crystal-focus',
   name: 'Crystal Focus',
-  icon: '🔮',
+  icon: '??',
   rarity: 'epic',
   owner: 'magician',
   description: 'Amplifies spell crits and refunds mana when Nitro surpasses 25.'
@@ -224,7 +224,7 @@ assignItem(5, {
 assignItem(6, {
   id: 'support-ember-tome',
   name: 'Ember Tome',
-  icon: '📕',
+  icon: '??',
   rarity: 'rare',
   owner: 'support',
   description: 'Starter tome storing flame sigils. Enables Harmony Pulse to ignite shields.'
@@ -233,7 +233,7 @@ assignItem(6, {
 assignItem(7, {
   id: 'support-guardian-bell',
   name: 'Guardian Bell',
-  icon: '🔔',
+  icon: '??',
   rarity: 'epic',
   owner: 'support',
   description: 'Rings to distribute Nitro across teammates after every heal tick.'
@@ -242,7 +242,7 @@ assignItem(7, {
 assignItem(8, {
   id: 'universal-potion',
   name: 'Healing Potion',
-  icon: '🧪',
+  icon: '??',
   rarity: 'common',
   owner: 'all',
   description: 'Restores 120 HP. Craftable via Molten Peaks materials.'
@@ -251,7 +251,7 @@ assignItem(8, {
 assignItem(9, {
   id: 'universal-warpstone',
   name: 'Warpstone Core',
-  icon: '💠',
+  icon: '??',
   rarity: 'legendary',
   owner: 'all',
   description: 'Teleports party to any unlocked map. Consumed on use.'
@@ -260,7 +260,7 @@ assignItem(9, {
 assignItem(10, {
   id: 'universal-nitro-capacitor',
   name: 'Nitro Capacitor',
-  icon: '⚡',
+  icon: '?',
   rarity: 'rare',
   owner: 'all',
   description: 'Temporarily doubles Nitro gain for 15 seconds.'
@@ -269,7 +269,7 @@ assignItem(10, {
 assignItem(11, {
   id: 'support-bastion-shield',
   name: 'Clockwork Barrier',
-  icon: '🛠️',
+  icon: '???',
   rarity: 'epic',
   owner: 'support',
   description: 'Emits mechanical wards in Clockwork Haven raids.'
@@ -278,7 +278,7 @@ assignItem(11, {
 assignItem(12, {
   id: 'magician-glacial-robe',
   name: 'Glacial Robe',
-  icon: '🧥',
+  icon: '??',
   rarity: 'rare',
   owner: 'magician',
   description: 'Frost-threaded robe that reduces mana cost of Astral Nova.'
@@ -287,7 +287,7 @@ assignItem(12, {
 assignItem(13, {
   id: 'archer-windrunner',
   name: 'Windrunner Boots',
-  icon: '🥾',
+  icon: '??',
   rarity: 'rare',
   owner: 'archer',
   description: 'Grants sprint burst and Nitro regen while moving.'
@@ -296,7 +296,7 @@ assignItem(13, {
 assignItem(14, {
   id: 'swordfighter-titan-shield',
   name: 'Titan Shield',
-  icon: '🛡️',
+  icon: '???',
   rarity: 'epic',
   owner: 'swordfighter',
   description: 'A massive shield salvaged from Molten Peaks golems. Adds guard break immunity.'
@@ -305,7 +305,7 @@ assignItem(14, {
 assignItem(15, {
   id: 'support-harmony-relic',
   name: 'Harmony Relic',
-  icon: '🔷',
+  icon: '??',
   rarity: 'legendary',
   owner: 'support',
   description: 'Legendary relic that shares 25% of Support Nitro gain with allies.'
@@ -314,7 +314,7 @@ assignItem(15, {
 assignItem(16, {
   id: 'universal-scroll',
   name: 'Quest Scroll',
-  icon: '📜',
+  icon: '??',
   rarity: 'common',
   owner: 'all',
   description: 'Unlocks a daily quest chain for Nara rewards.'
@@ -323,7 +323,7 @@ assignItem(16, {
 assignItem(17, {
   id: 'magician-celestial-ring',
   name: 'Celestial Ring',
-  icon: '💍',
+  icon: '??',
   rarity: 'legendary',
   owner: 'magician',
   description: 'Boosts INT by 8 and extends Nitro Nova duration by two seconds.'
@@ -437,6 +437,21 @@ const weaponColumns = document.getElementById('weapon-columns');
 const weaponColumnRefs = new Map<ClassId, HTMLElement>();
 const mapCardRefs = new Map<string, HTMLElement>();
 
+const toRgba = (hex: string, alpha: number) => {
+  const sanitized = hex.replace(/#/g, '');
+  if (sanitized.length !== 3 && sanitized.length !== 6) {
+    return `rgba(255, 255, 255, ${alpha})`;
+  }
+  const normalized = sanitized.length === 3
+    ? sanitized.split('').map((segment) => segment + segment).join('')
+    : sanitized;
+  const value = parseInt(normalized, 16);
+  const r = (value >> 16) & 255;
+  const g = (value >> 8) & 255;
+  const b = value & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
 const renderStats = (classInfo: ClassData) => {
   if (!statGrid) return;
   statGrid.innerHTML = '';
@@ -476,7 +491,7 @@ const renderInventory = (activeClass: ClassId) => {
     const item = slot.item;
     if (item) {
       slotElement.classList.add(`item-${item.rarity}`);
-      slotElement.title = `${item.name} — ${item.description}`;
+      slotElement.title = `${item.name} - ${item.description}`;
       const icon = document.createElement('span');
       icon.className = 'slot-icon';
       icon.textContent = item.icon;
@@ -519,7 +534,7 @@ const renderWeaponColumns = () => {
     weaponCatalog[classId].forEach((weapon) => {
       const item = document.createElement('li');
       const name = document.createElement('strong');
-      name.textContent = `${weapon.name} · ${weapon.rarity.toUpperCase()}`;
+      name.textContent = `${weapon.name} - ${weapon.rarity.toUpperCase()}`;
       const note = document.createElement('span');
       note.textContent = weapon.note;
       item.append(name, note);
@@ -593,12 +608,15 @@ const highlightMaps = (activeClass: ClassId) => {
   mapCardRefs.forEach((element, mapId) => {
     const mapInfo = mapData.find((map) => map.id === mapId);
     if (!mapInfo) return;
+    const baseGlow = toRgba(mapInfo.accent, 0.45);
+    const activeGlow = toRgba(mapInfo.accent, 0.75);
+    element.style.borderColor = mapInfo.accent;
     if (mapInfo.favored.includes(activeClass)) {
-      element.style.borderColor = 'var(--accent)';
-      element.style.filter = 'brightness(1.05)';
+      element.style.filter = 'brightness(1.08)';
+      element.style.boxShadow = '0 0 26px ' + activeGlow;
     } else {
-      element.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-      element.style.filter = 'brightness(0.95)';
+      element.style.filter = 'brightness(1)';
+      element.style.boxShadow = '0 0 18px ' + baseGlow;
     }
   });
 };
@@ -643,7 +661,7 @@ const updateClassDetails = (classId: ClassId) => {
   }
 
   if (naraBadge) {
-    naraBadge.textContent = `Nara · ${classInfo.nara} pts`;
+    naraBadge.textContent = `Nara - ${classInfo.nara} pts`;
   }
 
   renderInventory(classId);
