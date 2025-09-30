@@ -79,8 +79,8 @@ const classData: Record<ClassId, ClassData> = {
       nitro: 30
     },
     color: '#ff9b45',
-    heroArt: 'https://sdmntprwestus2.oaiusercontent.com/files/00000000-deac-61f8-a342-55a68cce7cb6/raw?se=2025-09-29T05%3A52%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=da8e8b37-bf16-52bd-b462-19a678f6e4cc&skoid=d5627e4c-566b-4761-a954-54993b0ed17b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-29T00%3A17%3A08Z&ske=2025-09-30T00%3A17%3A08Z&sks=b&skv=2024-08-04&sig=vFbgMvpGNInw2Wc/K2Xer8trx6OUuKIKP69l6a31vgA%3D',
-    heroAlt: 'Nitro Legacy pixel logo',
+    heroArt: 'https://sdmntprwestus3.oaiusercontent.com/files/00000000-7f9c-61fd-b829-fca52b50f5ac/raw?se=2025-09-29T17%3A14%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=20b5e0d0-7f28-5324-b95a-26375311fafa&skoid=03727f49-62d3-42ac-8350-1c0e6559d238&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-29T00%3A54%3A51Z&ske=2025-09-30T00%3A54%3A51Z&sks=b&skv=2024-08-04&sig=pNvhqdicPEmg29Bv0IGoCTEuQUAJXvH6dvfFnypue2o%3D',
+    heroAlt: 'Swordfighter pixel art hero',
     nara: 120,
     affinityMaps: ['forest', 'citadel'],
     starterWeaponName: 'Iron Sword'
@@ -103,8 +103,8 @@ const classData: Record<ClassId, ClassData> = {
       nitro: 30
     },
     color: '#ffa463',
-    heroArt: 'https://sdmntprwestus2.oaiusercontent.com/files/00000000-deac-61f8-a342-55a68cce7cb6/raw?se=2025-09-29T05%3A52%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=da8e8b37-bf16-52bd-b462-19a678f6e4cc&skoid=d5627e4c-566b-4761-a954-54993b0ed17b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-29T00%3A17%3A08Z&ske=2025-09-30T00%3A17%3A08Z&sks=b&skv=2024-08-04&sig=vFbgMvpGNInw2Wc/K2Xer8trx6OUuKIKP69l6a31vgA%3D',
-    heroAlt: 'Nitro Legacy pixel logo',
+    heroArt: 'https://public-frontend-cos.metadl.com/mgx/img/nitro-legacy/hero-archer.png',
+    heroAlt: 'Archer pixel art hero',
     nara: 110,
     affinityMaps: ['canyon', 'forest'],
     starterWeaponName: 'Ashwood Bow'
@@ -127,8 +127,8 @@ const classData: Record<ClassId, ClassData> = {
       nitro: 30
     },
     color: '#5fc1ff',
-    heroArt: 'https://sdmntprwestus2.oaiusercontent.com/files/00000000-deac-61f8-a342-55a68cce7cb6/raw?se=2025-09-29T05%3A52%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=da8e8b37-bf16-52bd-b462-19a678f6e4cc&skoid=d5627e4c-566b-4761-a954-54993b0ed17b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-29T00%3A17%3A08Z&ske=2025-09-30T00%3A17%3A08Z&sks=b&skv=2024-08-04&sig=vFbgMvpGNInw2Wc/K2Xer8trx6OUuKIKP69l6a31vgA%3D',
-    heroAlt: 'Nitro Legacy pixel logo',
+    heroArt: 'https://public-frontend-cos.metadl.com/mgx/img/nitro-legacy/hero-magician.png',
+    heroAlt: 'Magician pixel art hero',
     nara: 115,
     affinityMaps: ['citadel', 'abyss'],
     starterWeaponName: 'Astral Staff'
@@ -151,8 +151,8 @@ const classData: Record<ClassId, ClassData> = {
       nitro: 30
     },
     color: '#6bd3ff',
-    heroArt: 'https://sdmntprwestus2.oaiusercontent.com/files/00000000-deac-61f8-a342-55a68cce7cb6/raw?se=2025-09-29T05%3A52%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=da8e8b37-bf16-52bd-b462-19a678f6e4cc&skoid=d5627e4c-566b-4761-a954-54993b0ed17b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-29T00%3A17%3A08Z&ske=2025-09-30T00%3A17%3A08Z&sks=b&skv=2024-08-04&sig=vFbgMvpGNInw2Wc/K2Xer8trx6OUuKIKP69l6a31vgA%3D',
-    heroAlt: 'Nitro Legacy pixel logo',
+    heroArt: 'https://public-frontend-cos.metadl.com/mgx/img/nitro-legacy/hero-support.png',
+    heroAlt: 'Support pixel art hero',
     nara: 130,
     affinityMaps: ['forest', 'haven'],
     starterWeaponName: 'Ember Tome'

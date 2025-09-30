@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="https://sdmntprwestus2.oaiusercontent.com/files/00000000-deac-61f8-a342-55a68cce7cb6/raw?se=2025-09-29T05%3A52%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=da8e8b37-bf16-52bd-b462-19a678f6e4cc&skoid=d5627e4c-566b-4761-a954-54993b0ed17b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-29T00%3A17%3A08Z&ske=2025-09-30T00%3A17%3A08Z&sks=b&skv=2024-08-04&sig=vFbgMvpGNInw2Wc/K2Xer8trx6OUuKIKP69l6a31vgA%3D" type="image/png" />
+  <link rel="icon" href="https://sdmntprwestus3.oaiusercontent.com/files/00000000-7f9c-61fd-b829-fca52b50f5ac/raw?se=2025-09-29T17%3A14%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=20b5e0d0-7f28-5324-b95a-26375311fafa&skoid=03727f49-62d3-42ac-8350-1c0e6559d238&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-29T00%3A54%3A51Z&ske=2025-09-30T00%3A54%3A51Z&sks=b&skv=2024-08-04&sig=pNvhqdicPEmg29Bv0IGoCTEuQUAJXvH6dvfFnypue2o%3D" type="image/png" />
   <title>Nitro Legacy | Web3 Pixel Adventure</title>
   <meta
     name="description"
@@ -252,8 +252,12 @@
     }
 
     .pixel-hero {
-      width: clamp(180px, 40%, 240px);
+      max-width: 90%;
+      max-height: 90%;
+      width: auto;
+      height: auto;
       filter: drop-shadow(0 14px 0 rgba(14, 8, 44, 0.6));
+      transition: transform 0.2s ease;
     }
 
     .class-selector {
@@ -273,8 +277,9 @@
       border-radius: 18px;
       background: rgba(9, 5, 30, 0.78);
       border: 4px solid rgba(255, 255, 255, 0.08);
-      min-height: 220px;
-      display: grid;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
       gap: 12px;
       cursor: pointer;
       transition: transform 0.2s ease, border-color 0.2s ease;
@@ -307,6 +312,10 @@
     .class-card p {
       color: var(--muted);
       font-size: clamp(0.55rem, 0.8vw, 0.75rem);
+      line-height: 1.5;
+      letter-spacing: -0.02em;
+      flex: 1;
+      margin: 0;
     }
 
     .badge {
@@ -320,7 +329,9 @@
       color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 2px;
+      margin-top: auto;
     }
+
 
     .class-details {
       display: grid;
@@ -613,7 +624,7 @@
       }
 
       .class-card {
-        min-height: 180px;
+        min-height: 260px;
       }
 
       .map-card {
@@ -651,7 +662,7 @@
       </div>
       <div class="hero-showcase">
         <div class="pixel-preview">
-          <img src="https://sdmntprwestus2.oaiusercontent.com/files/00000000-deac-61f8-a342-55a68cce7cb6/raw?se=2025-09-29T05%3A52%3A43Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;scid=da8e8b37-bf16-52bd-b462-19a678f6e4cc&amp;skoid=d5627e4c-566b-4761-a954-54993b0ed17b&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2025-09-29T00%3A17%3A08Z&amp;ske=2025-09-30T00%3A17%3A08Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=vFbgMvpGNInw2Wc/K2Xer8trx6OUuKIKP69l6a31vgA%3D" alt="Nitro Legacy pixel logo" class="pixel-hero" />
+          <img src="https://sdmntprwestus3.oaiusercontent.com/files/00000000-7f9c-61fd-b829-fca52b50f5ac/raw?se=2025-09-29T17%3A14%3A43Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;scid=20b5e0d0-7f28-5324-b95a-26375311fafa&amp;skoid=03727f49-62d3-42ac-8350-1c0e6559d238&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2025-09-29T00%3A54%3A51Z&amp;ske=2025-09-30T00%3A54%3A51Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=pNvhqdicPEmg29Bv0IGoCTEuQUAJXvH6dvfFnypue2o%3D" alt="Swordfighter pixel art hero" class="pixel-hero" />
         </div>
         <div class="class-selector">
           <span class="subtitle">Pick Your Starting Class</span>
