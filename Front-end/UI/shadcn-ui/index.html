@@ -570,12 +570,19 @@
       gap: 12px;
     }
 
-    .weapon-list li {
+    .weapon-entry {
       list-style: none;
       padding: 10px;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.04);
       border: 2px solid rgba(255, 255, 255, 0.06);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    .weapon-entry.active {
+      border-color: var(--entry-accent, var(--accent));
+      box-shadow: 0 0 18px var(--entry-glow, rgba(111, 220, 255, 0.45));
+      transform: translateY(-3px);
     }
 
     .weapon-list strong {
@@ -586,6 +593,42 @@
 
     .weapon-list span {
       font-size: 0.5rem;
+      color: var(--muted);
+    }
+
+    .wallet-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .connect-wallet {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 2px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      font-size: 0.6rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+    }
+
+    .connect-wallet:hover:not([disabled]) {
+      background: var(--accent);
+      color: #050414;
+    }
+
+    .connect-wallet[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .wallet-status {
+      font-size: 0.55rem;
       color: var(--muted);
     }
 
@@ -755,6 +798,10 @@
       </p>
       <div class="wallet-panel">
         <span class="subtitle">Key Systems</span>
+        <div class="wallet-actions">
+          <button id="connect-wallet" class="connect-wallet">Connect Wallet</button>
+          <span id="wallet-status" class="wallet-status">Not connected</span>
+        </div>
         <ul>
           <li>Token wallet connection using EVM-compatible providers.</li>
           <li>Marketplace tab allows swapping NFT weapons and map keys.</li>

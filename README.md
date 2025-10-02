@@ -1,0 +1,1 @@
+﻿Đặt sprite sheet Nitro Legacy (ví dụ image.png) vào thư mục này.

@@ -1,3 +1,7 @@
+import { ethers } from 'ethers';
+import nitroArtifact from './chain/NitroLegacyInventory.json';
+import { NITRO_CONTRACT_ADDRESS, SUPPORTED_NETWORKS } from './chain/config';
+
 interface ClassStats {
   atk: number;
   def: number;
@@ -159,11 +163,11 @@ const classData: Record<ClassId, ClassData> = {
   }
 };
 
-const inventorySlots: InventorySlot[] = Array.from({ length: 20 }, (_, index) => ({ slot: index, item: null }));
+const fallbackInventory: InventorySlot[] = Array.from({ length: 20 }, (_, index) => ({ slot: index, item: null }));
 
 const assignItem = (slot: number, item: InventoryItem) => {
-  if (inventorySlots[slot]) {
-    inventorySlots[slot].item = item;
+  if (fallbackInventory[slot]) {
+    fallbackInventory[slot].item = item;
   }
 };
 
@@ -437,6 +441,281 @@ const weaponColumns = document.getElementById('weapon-columns');
 const weaponColumnRefs = new Map<ClassId, HTMLElement>();
 const mapCardRefs = new Map<string, HTMLElement>();
 
+const connectWalletButton = document.getElementById('connect-wallet') as HTMLButtonElement | null;
+const walletStatusLabel = document.getElementById('wallet-status');
+
+const nitroAbi = (nitroArtifact as { abi: ethers.InterfaceAbi }).abi as ethers.InterfaceAbi;
+const contractAddress = NITRO_CONTRACT_ADDRESS;
+const CLASS_ORDER: ClassId[] = ['swordfighter', 'archer', 'magician', 'support'];
+const RARITY_ORDER: Rarity[] = ['common', 'rare', 'epic', 'legendary'];
+
+let activeClassId: ClassId = 'swordfighter';
+let provider: ethers.BrowserProvider | null = null;
+let nitroContract: ethers.Contract | null = null;
+let currentAccount: string | null = null;
+let walletListenersRegistered = false;
+
+const onChainInventoryCache = new Map<ClassId, InventorySlot[]>();
+
+const setWalletStatus = (message: string) => {
+  if (walletStatusLabel) {
+    walletStatusLabel.textContent = message;
+  }
+};
+
+const updateWalletButton = (label: string, disabled = false) => {
+  if (connectWalletButton) {
+    connectWalletButton.textContent = label;
+    connectWalletButton.disabled = disabled;
+  }
+};
+
+const shortenAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
+
+const hasContractConfigured = () => contractAddress.length > 0;
+
+const getProvider = () => {
+  if (!window.ethereum) {
+    throw new Error('No injected wallet detected. Install MetaMask or another EVM wallet.');
+  }
+  if (!provider) {
+    provider = new ethers.BrowserProvider(window.ethereum);
+  }
+  return provider;
+};
+
+const requestWalletAccounts = async () => {
+  const providerInstance = getProvider();
+  const accounts = await providerInstance.send<string[]>('eth_requestAccounts', []);
+  if (!accounts.length) {
+    throw new Error('Wallet connection rejected by the user.');
+  }
+  currentAccount = ethers.getAddress(accounts[0]);
+  return providerInstance;
+};
+
+const syncWalletAccount = async () => {
+  const providerInstance = getProvider();
+  const accounts = await providerInstance.listAccounts();
+  if (!accounts.length) {
+    currentAccount = null;
+    return null;
+  }
+  currentAccount = ethers.getAddress(accounts[0]);
+  return providerInstance;
+};
+
+const attachContract = async (providerInstance: ethers.BrowserProvider) => {
+  if (!hasContractConfigured()) {
+    nitroContract = null;
+    return false;
+  }
+  const signer = await providerInstance.getSigner();
+  nitroContract = new ethers.Contract(contractAddress, nitroAbi, signer);
+  return true;
+};
+
+const networkLabel = async () => {
+  if (!provider) return '';
+  const network = await provider.getNetwork();
+  return SUPPORTED_NETWORKS[Number(network.chainId)] ?? `Chain ${network.chainId}`;
+};
+
+const registerWalletListeners = () => {
+  if (walletListenersRegistered || !window.ethereum?.on) {
+    return;
+  }
+
+  window.ethereum.on('accountsChanged', (accounts: string[]) => {
+    void (async () => {
+      if (!accounts.length) {
+        currentAccount = null;
+        updateWalletButton('Connect wallet', false);
+        setWalletStatus('Wallet disconnected.');
+        onChainInventoryCache.clear();
+        nitroContract = null;
+        await renderInventory(activeClassId);
+        return;
+      }
+
+      currentAccount = ethers.getAddress(accounts[0]);
+      const providerInstance = getProvider();
+      const contractReady = await attachContract(providerInstance);
+      const label = await networkLabel();
+      const base = `Connected: ${shortenAddress(currentAccount)}`;
+      const suffix = label ? ` (${label})` : '';
+      setWalletStatus(contractReady ? `${base}${suffix}` : `${base}${suffix} - contract not configured`);
+      onChainInventoryCache.clear();
+      await renderInventory(activeClassId);
+    })().catch((error) => {
+      console.error('accountsChanged handler failed', error);
+      setWalletStatus('Wallet change failed. Check console for details.');
+    });
+  });
+
+  window.ethereum.on('chainChanged', () => {
+    window.location.reload();
+  });
+
+  walletListenersRegistered = true;
+};
+
+const ownerFromCode = (code: number): ClassId | 'all' => {
+  if (code === 0) return 'all';
+  return CLASS_ORDER[code - 1] ?? 'all';
+};
+
+const rarityFromIndex = (value: number): Rarity => RARITY_ORDER[value] ?? 'common';
+
+const drawInventoryGrid = (slots: InventorySlot[], classId: ClassId, highlightAll: boolean) => {
+  if (!inventoryGrid) return;
+  inventoryGrid.innerHTML = '';
+
+  slots.forEach((slot) => {
+    const slotElement = document.createElement('div');
+    slotElement.className = 'inventory-slot';
+    slotElement.dataset.slot = slot.slot.toString();
+
+    const item = slot.item;
+    if (item) {
+      slotElement.classList.add(`item-${item.rarity}`);
+      slotElement.title = `${item.name} - ${item.description}`;
+
+      const icon = document.createElement('span');
+      icon.className = 'slot-icon';
+      icon.textContent = item.icon && item.icon.trim().length ? item.icon : '?';
+      const name = document.createElement('span');
+      name.textContent = item.name;
+
+      slotElement.append(icon, name);
+
+      if (highlightAll || item.owner === classId || item.owner === 'all') {
+        slotElement.classList.add('active');
+      }
+    } else {
+      slotElement.textContent = 'Empty Slot';
+    }
+
+    inventoryGrid.append(slotElement);
+  });
+};
+
+const fetchInventoryFromContract = async (classId: ClassId): Promise<InventorySlot[]> => {
+  if (!nitroContract) {
+    throw new Error('Contract not initialised. Connect a wallet first.');
+  }
+
+  const [rawItems, rawSlots] = await Promise.all([
+    nitroContract.listItems(),
+    nitroContract.getInventory(CLASS_ORDER.indexOf(classId))
+  ]);
+
+  const itemIndex = new Map<number, InventoryItem>();
+  rawItems.forEach((raw: any) => {
+    if (!raw.active) return;
+    const id = Number(raw.id);
+    itemIndex.set(id, {
+      id: raw.id.toString(),
+      name: raw.name,
+      icon: raw.icon ?? '',
+      description: raw.description,
+      rarity: rarityFromIndex(Number(raw.rarity)),
+      owner: ownerFromCode(Number(raw.ownerCode))
+    });
+  });
+
+  return rawSlots.map((raw: any) => {
+    const slotNumber = Number(raw.slot);
+    const itemId = Number(raw.itemId);
+    const hasItem = Boolean(raw.hasItem) && itemIndex.has(itemId);
+    return {
+      slot: slotNumber,
+      item: hasItem ? itemIndex.get(itemId)! : null
+    };
+  });
+};
+
+const loadInventoryFromContract = async (classId: ClassId) => {
+  let slots = onChainInventoryCache.get(classId);
+  if (!slots) {
+    slots = await fetchInventoryFromContract(classId);
+    onChainInventoryCache.set(classId, slots);
+  }
+  return slots;
+};
+
+const renderInventory = async (classId: ClassId) => {
+  if (nitroContract) {
+    try {
+      const slots = await loadInventoryFromContract(classId);
+      drawInventoryGrid(slots, classId, true);
+      return;
+    } catch (error) {
+      console.error('Failed to load on-chain inventory', error);
+      setWalletStatus('Unable to read on-chain inventory. Falling back to sample data.');
+    }
+  }
+
+  drawInventoryGrid(fallbackInventory, classId, false);
+};
+
+const handleConnectClick = async () => {
+  try {
+    updateWalletButton('Connecting...', true);
+    const providerInstance = await requestWalletAccounts();
+    provider = providerInstance;
+    const contractReady = await attachContract(providerInstance);
+    registerWalletListeners();
+    const label = await networkLabel();
+    const base = `Connected: ${shortenAddress(currentAccount!)}`;
+    const suffix = label ? ` (${label})` : '';
+    setWalletStatus(contractReady ? `${base}${suffix}` : `${base}${suffix} - contract not configured`);
+    updateWalletButton('Wallet connected', true);
+    onChainInventoryCache.clear();
+    await renderInventory(activeClassId);
+  } catch (error) {
+    console.error('Wallet connect failed', error);
+    setWalletStatus((error as Error).message);
+    updateWalletButton('Connect wallet', false);
+  }
+};
+
+const attemptEagerConnection = async () => {
+  if (!window.ethereum) {
+    setWalletStatus('Install MetaMask or another browser wallet to connect.');
+    return;
+  }
+
+  try {
+    const providerInstance = await syncWalletAccount();
+    if (providerInstance && currentAccount) {
+      provider = providerInstance;
+      const contractReady = await attachContract(providerInstance);
+      registerWalletListeners();
+      const label = await networkLabel();
+      const base = `Connected: ${shortenAddress(currentAccount)}`;
+      const suffix = label ? ` (${label})` : '';
+      setWalletStatus(contractReady ? `${base}${suffix}` : `${base}${suffix} - contract not configured`);
+      updateWalletButton('Wallet connected', true);
+      onChainInventoryCache.clear();
+      await renderInventory(activeClassId);
+    } else {
+      updateWalletButton('Connect wallet', false);
+      setWalletStatus(hasContractConfigured() ? 'Wallet not connected.' : 'Connect a wallet to view on-chain inventory.');
+    }
+  } catch (error) {
+    console.warn('Silent wallet connect failed', error);
+    updateWalletButton('Connect wallet', false);
+    setWalletStatus('Wallet not connected.');
+  }
+};
+
+if (connectWalletButton) {
+  connectWalletButton.addEventListener('click', () => {
+    void handleConnectClick();
+  });
+}
+
 const toRgba = (hex: string, alpha: number) => {
   const sanitized = hex.replace(/#/g, '');
   if (sanitized.length !== 3 && sanitized.length !== 6) {
@@ -483,7 +762,7 @@ const renderInventory = (activeClass: ClassId) => {
   if (!inventoryGrid) return;
   inventoryGrid.innerHTML = '';
 
-  inventorySlots.forEach((slot) => {
+  fallbackInventory.forEach((slot) => {
     const slotElement = document.createElement('div');
     slotElement.className = 'inventory-slot';
     slotElement.dataset.slot = slot.slot.toString();
@@ -521,6 +800,9 @@ const renderWeaponColumns = () => {
     column.className = 'weapon-card';
     column.dataset.class = classId;
 
+    const classAccent = classData[classId].color;
+    const classGlow = toRgba(classAccent, 0.45);
+
     const header = document.createElement('h3');
     header.textContent = `${classData[classId].name}`;
 
@@ -533,6 +815,9 @@ const renderWeaponColumns = () => {
 
     weaponCatalog[classId].forEach((weapon) => {
       const item = document.createElement('li');
+      item.className = 'weapon-entry';
+      item.style.setProperty('--entry-accent', classAccent);
+      item.style.setProperty('--entry-glow', classGlow);
       const name = document.createElement('strong');
       name.textContent = `${weapon.name} - ${weapon.rarity.toUpperCase()}`;
       const note = document.createElement('span');
@@ -592,14 +877,15 @@ const renderMaps = () => {
 
 const highlightWeapons = (activeClass: ClassId) => {
   weaponColumnRefs.forEach((element, classId) => {
+    const entries = element.querySelectorAll<HTMLElement>('.weapon-entry');
     if (classId === activeClass) {
-      element.style.borderColor = 'var(--accent)';
-      element.style.boxShadow = '0 0 18px rgba(111, 220, 255, 0.35)';
-      element.style.transform = 'translateY(-4px)';
+      entries.forEach((entry) => {
+        entry.classList.add('active');
+      });
     } else {
-      element.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-      element.style.boxShadow = 'none';
-      element.style.transform = 'none';
+      entries.forEach((entry) => {
+        entry.classList.remove('active');
+      });
     }
   });
 };
@@ -644,7 +930,8 @@ const setHeroVisuals = (classInfo: ClassData) => {
   }
 };
 
-const updateClassDetails = (classId: ClassId) => {
+const updateClassDetails = async (classId: ClassId) => {
+  activeClassId = classId;
   const classInfo = classData[classId];
   renderStats(classInfo);
 
@@ -664,7 +951,7 @@ const updateClassDetails = (classId: ClassId) => {
     naraBadge.textContent = `Nara - ${classInfo.nara} pts`;
   }
 
-  renderInventory(classId);
+  await renderInventory(classId);
   highlightWeapons(classId);
   highlightMaps(classId);
   setHeroVisuals(classInfo);
@@ -678,7 +965,7 @@ const attachClassSelection = () => {
       const classId = card.dataset.class as ClassId | undefined;
       if (!classId) return;
       setActiveClassCard(classId);
-      updateClassDetails(classId);
+      void updateClassDetails(classId);
     });
   });
 };
@@ -688,5 +975,6 @@ window.addEventListener('DOMContentLoaded', () => {
   renderMaps();
   attachClassSelection();
   setActiveClassCard('swordfighter');
-  updateClassDetails('swordfighter');
+  void updateClassDetails('swordfighter');
+  void attemptEagerConnection();
 });

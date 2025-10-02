@@ -14,5 +14,8 @@
     "tailwindcss": "^3.4.0",
     "typescript": "^5.9.2",
     "vite": "^5.4.0"
+  },
+  "dependencies": {
+    "ethers": "^6.15.0"
   }
 }
